@@ -31,4 +31,5 @@ def login(user: UserCreate, db: Session = Depends(get_db)):
     if not dbu or not pwd.verify(user.password, dbu.hashed_password):
         raise HTTPException(400, "Invalid credentials")
     token = jwt.encode({"sub": dbu.username, "uid": dbu.id, "exp": datetime.utcnow() + timedelta(days=1)}, SECRET, algorithm=ALGO)
+
     return {"access_token": token}
